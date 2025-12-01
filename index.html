@@ -1,0 +1,1321 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>GCSE Maths – Number (AQA/Edexcel/Eduqas) Foundation – Non‑Calculator (15Q / 62 marks)</title>
+<style>
+  :root{
+    --ink:#1f2937; --muted:#6b7280; --accent:#2563eb; --bg:#ffffff; --panel:#f8fafc;
+    --success:#0a7d45; --error:#b91c1c; --border:#e5e7eb; --tabh:56px;
+    --exp-left: 2px;
+    --redbg:#fee2e2; --redfg:#991b1b; --orbg:#ffedd5; --orfg:#9a3412; --grbg:#dcfce7; --grfg:#065f46;
+    --sidew: 220px; /* NEW: width of the left controls sidebar */
+  }
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font:18px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;}
+  header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--border);}
+  .bar{display:flex;gap:.5rem;align-items:center;overflow:auto hidden;white-space:nowrap;height:var(--tabh);padding:.5rem .75rem;}
+  .bar button{appearance:none;border:1px solid var(--border);background:#fff;color:var(--ink);
+    border-radius:999px;padding:.45rem 1rem;cursor:pointer;font-weight:700;transition:.15s;flex:0 0 auto;}
+  .bar button:hover{border-color:#c7d2fe}
+  .bar button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .logo-inline{height:40px;width:40px;border-radius:8px;object-fit:cover;flex:0 0 auto;margin-right:.4rem}
+  .nocalc{height:32px;width:32px;object-fit:contain;vertical-align:middle}
+  main{max-width:980px;margin:1rem auto;padding:0 1rem 5rem}
+  /* NEW: ensure main content never sits under the left sidebar */
+  main{margin-left:var(--sidew);}
+  section.page{display:none;animation:fade .15s ease-out}
+  section.page.active{display:block}
+  @keyframes fade{from{opacity:.45;transform:translateY(-2px)}to{opacity:1;transform:none}}
+  h2{font-size:1.35rem;margin:1.2rem 0 .45rem}
+  h3{font-size:1.15rem;margin:.9rem 0 .35rem}
+  .grid{display:grid;gap:1rem}
+  .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  table{border-collapse:collapse;width:100%}
+  th,td{border:1px solid var(--border);padding:.65rem .7rem;text-align:left;vertical-align:middle}
+  th{background:#f3f4f6}
+  .flex{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+  .align-right{display:flex;justify-content:flex-end}
+  .qpanel{border:1px solid var(--border);border-radius:.7rem;overflow:hidden;margin:1.4rem 0 2.0rem}
+  .qhead{padding:1rem 1.1rem;border-bottom:1px solid var(--border);background:#fbfdff}
+  .qbody{padding:1.1rem 1.1rem}
+  .qbody p{margin:1.0rem 0 1.15rem}
+  .marktag{color:#374151}
+  .muted{color:var(--muted)}
+  .score{font-weight:800;margin-left:.5rem}
+  .result.ok{color:var(--success)} .result.no{color:var(--error)}
+
+  /* fraction inputs */
+  .frac{
+    --w:64px; --bar:2px;
+    display:inline-grid; grid-template-rows: 1fr var(--bar) 1fr;
+    align-items:stretch; justify-items:stretch; margin:0 .25rem; vertical-align:middle;
+  }
+  .frac input{
+    width:var(--w); height:32px; text-align:center; border:1px solid var(--border);
+    border-radius:.35rem; padding:.15rem .2rem; box-sizing:border-box;
+  }
+  .frac .bar{width:75%; height:0; border-top:2px solid #111; margin:0; justify-self:start}
+
+  /* Standard form / exponent widgets */
+  .stdform{display:inline-flex;align-items:flex-end;gap:.25rem}
+  .stdform input[type="text"]{width:82px;text-align:center;border:1px solid var(--border);border-radius:.35rem;padding:.28rem .25rem}
+  .stdform .ten{display:inline-block;margin:0 .15rem}
+  .stdform .expbox{position:relative;display:inline-block}
+  .stdform .expbox input{
+    width:38px;text-align:center;border:1px solid var(--border);border-radius:.35rem;
+    padding:.1rem .15rem;font-size:.9em;position:absolute;left:var(--exp-left);bottom:1.6em;
+  }
+  .stdform .expbox .phantom{visibility:hidden}
+
+  .expform{display:inline-flex;align-items:flex-end;gap:.25rem}
+  .expform .expbase{font-weight:700}
+  .expform .expbox{position:relative;display:inline-block}
+  .expform .expbox input{
+    width:38px;text-align:center;border:1px solid var(--border);border-radius:.35rem;
+    padding:.1rem .15rem;font-size:.9em;position:absolute;left:var(--exp-left);bottom:1.6em;
+  }
+  .expform .expbox .phantom{visibility:hidden}
+
+  /* modal */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.4);z-index:1000}
+  .modal .panel{width:min(620px,92vw);background:#fff;border:1px solid var(--border);border-radius:.7rem;padding:1rem 1.1rem}
+  .modal .panel h3{margin:.2rem 0 .6rem}
+  .modal .panel .row{display:flex;gap:.5rem;align-items:center;margin-top:.6rem;flex-wrap:wrap}
+  .modal input{flex:1;padding:.55rem;border:1px solid var(--border);border-radius:.4rem}
+
+  /* breakdown colour */
+  .markcell{font-weight:800}
+  .mark-red{background:var(--redbg);color:var(--redfg)}
+  .mark-orange{background:var(--orbg);color:var(--orfg)}
+  .mark-green{background:var(--grbg);color:var(--grfg)}
+
+  /* ticks / crosses */
+  .pm{display:none;margin-left:.4rem;font-weight:900}
+  .pm.ok{color:var(--success)}
+  .pm.no{color:var(--error)}
+
+  /* results actions button styling */
+  .actions .btn{
+    appearance:none;border:1px solid var(--border);background:var(--accent);color:#fff;
+    border-radius:999px;padding:.45rem 1rem;cursor:pointer;font-weight:700;display:inline-block;
+    text-decoration:none;
+  }
+
+  /* ====== NEW: Left-side display controls (vertical) ====== */
+  #uxside{
+    position:fixed; left:0; top:var(--tabh); height:calc(100vh - var(--tabh));
+    width:var(--sidew); background:#fff; border-right:1px solid var(--border);
+    padding:.75rem; box-sizing:border-box; z-index:40; display:flex; flex-direction:column; gap:.4rem;
+  }
+  #uxside .section-title{font-weight:800;color:var(--muted);margin:.1rem 0 .2rem}
+  #uxside .spacer{height:.35rem}
+  #uxside button{
+    appearance:none;border:1px solid var(--border);background:#fff;color:var(--ink);
+    border-radius:.5rem;padding:.45rem .65rem;cursor:pointer;font-weight:700;transition:.15s;width:100%;text-align:left;
+  }
+  #uxside button:hover{border-color:#c7d2fe}
+  #uxside button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* ====== NEW: Screen overlay tint ====== */
+  #overlayTint{
+    position:fixed; inset:0; pointer-events:none; background:transparent; display:none; z-index:900;
+  }
+  body.overlay-blue #overlayTint{display:block; background:rgba(37,99,235,.15);}
+  body.overlay-yellow #overlayTint{display:block; background:rgba(255,221,87,.18);}
+
+  /* ====== UPDATED: Dark mode — EVERYTHING dark/black except the small answer input boxes ====== */
+  body.dark{
+    --bg:#000; --ink:#ffffff; --muted:#cbd5e1; --panel:#000; --border:#333333;
+  }
+  body.dark header{background:#000;border-bottom-color:#333;}
+  /* top nav buttons in dark */
+  body.dark .bar button{background:#000;color:#e5e7eb;border-color:#374151;}
+  body.dark .bar button:hover{border-color:#3b82f6;}
+  body.dark .bar button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+  /* left controls surface dark */
+  body.dark #uxside{background:#000;border-right-color:#333;}
+  body.dark #uxside button{background:#000;color:#e5e7eb;border-color:#374151;}
+  body.dark #uxside button:hover{border-color:#3b82f6;}
+
+  /* make ALL question panels and text dark */
+  body.dark .qpanel{background:#000;color:#ffffff;border-color:#333;}
+  body.dark .qhead{background:#000;border-bottom-color:#333;color:#ffffff;}
+  body.dark .qbody{background:#000;color:#ffffff;}
+  body.dark .marktag{color:#cbd5e1;}
+  body.dark .frac .bar{border-top-color:#cbd5e1;}
+
+  /* tables dark */
+  body.dark table{color:#e5e7eb;}
+  body.dark th, body.dark td{background:#000;border-color:#333;}
+
+  /* modal dark (panel too) */
+  body.dark .modal{background:rgba(0,0,0,.7);}
+  body.dark .modal .panel{background:#000;border-color:#333;color:#ffffff;}
+
+  /* generic buttons (e.g., Mark all, inline symbol buttons) dark */
+  body.dark button{background:#000;color:#e5e7eb;border:1px solid #374151;}
+
+  /* keep ONLY input fields light for typing answers (and any text inputs) */
+  body.dark input, body.dark select, body.dark textarea{
+    background:#ffffff; color:#111111; border-color:#e5e7eb;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar" id="tabbar" role="tablist" aria-label="Quick navigation">
+    <button class="active" data-target="q1" role="tab" aria-selected="true">Q1</button><button data-target="q2" role="tab">Q2</button><button data-target="q3" role="tab">Q3</button>
+    <button data-target="q4" role="tab">Q4</button><button data-target="q5" role="tab">Q5</button><button data-target="q6" role="tab">Q6</button>
+    <button data-target="q7" role="tab">Q7</button><button data-target="q8" role="tab">Q8</button><button data-target="q9" role="tab">Q9</button>
+    <button data-target="q10" role="tab">Q10</button><button data-target="q11" role="tab">Q11</button><button data-target="q12" role="tab">Q12</button>
+    <button data-target="q13" role="tab">Q13</button><button data-target="q14" role="tab">Q14</button><button data-target="q15" role="tab">Q15</button>
+    <button data-target="results" role="tab">Results</button>
+  </div>
+</header>
+
+<!-- NEW: Vertical left-side menu for Overlay & Theme -->
+<aside id="uxside" role="navigation" aria-label="Display options">
+  <div class="section-title">Overlay</div>
+  <button type="button" id="ovNoneBtn" title="No overlay">None</button>
+  <button type="button" id="ovBlueBtn" title="Blue overlay">Blue</button>
+  <button type="button" id="ovYellowBtn" title="Yellow overlay">Yellow</button>
+  <div class="spacer"></div>
+  <div class="section-title">Theme</div>
+  <button type="button" id="lightBtn" title="Light mode">Light</button>
+  <button type="button" id="darkBtn" title="Dark mode">Dark</button>
+</aside>
+
+<main>
+  <!-- =================== QUESTIONS (NUMBER ONLY) =================== -->
+
+  <!-- Q1 PLACE VALUE -->
+  <section id="q1" class="page active" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead">
+        <div class="flex"><h3>Q1. Place value (incl. decimals) <span class="marktag">[4 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div>
+        <div class="align-right"><span id="q1res" class="score"></span></div>
+      </div>
+      <div class="qbody">
+        <p><b>(a)</b> What is the <b>value</b> of the digit <b>5</b> in <b id="q1a_num">0.40507</b>? → <input id="q1a" size="10"/><span class="pm" id="q1a_pm"></span></p>
+        <p><b>(b)</b> Complete the expansion: <b id="q1b_num">0.307</b> =
+          <input id="q1b1" size="3"/> × 0.1 +
+          <input id="q1b2" size="3"/> × 0.01 +
+          <input id="q1b3" size="3"/> × 0.001
+          <span class="pm" id="q1b_pm"></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q2 ROUNDING -->
+  <section id="q2" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q2. Rounding (nearest, d.p., s.f.) <span class="marktag">[3 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q2res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> Round <b id="q2a_num">73846</b> to the nearest <b id="q2a_unit">thousand</b>. → <input id="q2a" size="8"/><span class="pm" id="q2a_pm"></span></p>
+        <p><b>(b)</b> Round <b id="q2b_num">3.468</b> to <b id="q2b_label">1 decimal place</b>. → <input id="q2b" size="6"/><span class="pm" id="q2b_pm"></span></p>
+        <p><b>(c)</b> Round <b id="q2c_num">0.007986</b> to <b id="q2c_label">2 significant figures</b>. → <input id="q2c" size="8"/><span class="pm" id="q2c_pm"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q3 ADD & SUBTRACT -->
+  <section id="q3" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q3. Add &amp; subtract numbers <span class="marktag">[4 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q3res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> <b id="q3a_x">4876</b> − <b id="q3a_y">1939</b> = <input id="q3a" size="8"/><span class="pm" id="q3a_pm"></span></p>
+        <p><b>(b)</b> <b id="q3b_a">−3.4</b> + <b id="q3b_b">7.28</b> = <input id="q3b" size="8"/><span class="pm" id="q3b_pm"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q4 MULTIPLY & DIVIDE -->
+  <section id="q4" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q4. Multiply &amp; divide numbers (written methods) <span class="marktag">[4 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q4res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> <b id="q4a_m">307</b> × <b id="q4a_n">24</b> = <input id="q4a" size="8"/><span class="pm" id="q4a_pm"></span></p>
+        <p><b>(b)</b> <b id="q4b_dividend">5268</b> ÷ <b id="q4b_divisor">12</b> = <input id="q4b" size="8"/><span class="pm" id="q4b_pm"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q5 FRACTIONS -->
+  <section id="q5" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q5. Fractions — Fraction of an amount &amp; reverse fraction <span class="marktag">[3 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q5res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> Find <span id="q5fracA"><math><mfrac><mn>3</mn><mn>5</mn></mfrac></math></span> of <b id="q5a_amt">210</b>. → <input id="q5a" size="8"/><span class="pm" id="q5a_pm"></span></p>
+        <p><b>(b)</b> <span id="q5fracB"><math><mfrac><mn>3</mn><mn>5</mn></mfrac></math></span> of a number is <b id="q5b_amt">210</b>. Find the number. → <input id="q5b" size="8"/><span class="pm" id="q5b_pm"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q6 ADD/SUBTRACT FRACTIONS -->
+  <section id="q6" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q6. Fractions — Add &amp; subtract (give answers in simplest form) <span class="marktag">[4 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q6res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> <span id="q6a_expr"><math><mfrac><mn>3</mn><mn>8</mn></mfrac><mo>+</mo><mfrac><mn>5</mn><mn>12</mn></mfrac></math></span>
+          = <span class="frac"><input id="q6a_n" inputmode="numeric"/><span class="bar"></span><input id="q6a_d" inputmode="numeric"/></span>
+          <span class="pm" id="q6a_pm"></span>
+        </p>
+        <p><b>(b)</b> <span id="q6b_expr"><math><mfrac><mn>7</mn><mn>10</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>5</mn></mfrac></math></span>
+          = <span class="frac"><input id="q6b_n" inputmode="numeric"/><span class="bar"></span><input id="q6b_d" inputmode="numeric"/></span>
+          <span class="pm" id="q6b_pm"></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q7 MULTIPLY/DIVIDE FRACTIONS -->
+  <section id="q7" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q7. Fractions — Multiply &amp; divide (simplify) <span class="marktag">[5 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q7res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> <span id="q7a_expr"><math><mfrac><mn>2</mn><mn>3</mn></mfrac><mo>×</mo><mfrac><mn>15</mn><mn>28</mn></mfrac></math></span>
+          = <span class="frac"><input id="q7a_n" inputmode="numeric"/><span class="bar"></span><input id="q7a_d" inputmode="numeric"/></span>
+          <span class="pm" id="q7a_pm"></span>
+        </p>
+        <p><b>(b)</b> <span id="q7b_expr"><math><mfrac><mn>5</mn><mn>6</mn></mfrac><mo>÷</mo><mfrac><mn>3</mn><mn>10</mn></mfrac></math></span>
+          = <span class="frac"><input id="q7b_n" inputmode="numeric"/><span class="bar"></span><input id="q7b_d" inputmode="numeric"/></span>
+          <span class="pm" id="q7b_pm"></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q8 FDP CONVERSIONS -->
+  <section id="q8" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q8. Convert between fractions, decimals &amp; percentages (+ % of an amount) <span class="marktag">[5 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q8res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> Write <b id="q8a_dec">0.375</b> as a fraction in simplest form and as a percentage:
+          <span class="frac"><input id="q8a_n" inputmode="numeric"/><span class="bar"></span><input id="q8a_d" inputmode="numeric"/></span>
+          and <input id="q8a_pct" size="6"/> %
+          <span class="pm" id="q8a_pm"></span>
+        </p>
+        <p><b>(b)</b> Write <span id="q8b_frac"><math><mfrac><mn>7</mn><mn>20</mn></mfrac></math></span> as a decimal. → <input id="q8b" size="8"/><span class="pm" id="q8b_pm"></span></p>
+        <p><b>(c)</b> Write <b id="q8c_pct">12%</b> as a fraction in simplest form:
+          <span class="frac"><input id="q8c_n" inputmode="numeric"/><span class="bar"></span><input id="q8c_d" inputmode="numeric"/></span>
+          <span class="pm" id="q8c_pm"></span>
+        </p>
+        <p><b>(d)</b> Find <b id="q8d_pct">15%</b> of <b id="q8d_amt">160</b>. → <input id="q8d" size="8"/><span class="pm" id="q8d_pm"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q9 ESTIMATION -->
+  <section id="q9" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q9. Estimation &amp; approximation (1 s.f.) <span class="marktag">[3 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q9res" class="score"></span></div></div>
+      <div class="qbody">
+        <p>By rounding to <b>1 significant figure</b>, estimate <b id="q9x">39.7</b> × <b id="q9y">0.51</b>.</p>
+        <p>Rounded numbers used: <input id="q9r1" size="6"/> × <input id="q9r2" size="6"/> → Estimate = <input id="q9est" size="6"/><span class="pm" id="q9_pm"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q10 MEASURES & ACCURACY -->
+  <section id="q10" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q10. Measures &amp; accuracy (units &amp; error intervals) <span class="marktag">[5 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q10res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> Convert: <b id="q10a_kg">3.5</b> kg = <input id="q10a" size="8"/> g &nbsp;&nbsp; and &nbsp; <b id="q10b_m">2.4</b> m = <input id="q10b" size="8"/> cm <span class="pm" id="q10a_pm"></span></p>
+        <p><b>(b)</b> A rope is measured as <b><span id="q10c_meas">8.4</span> m</b> to the nearest <b><span id="q10c_unit">0.1 m</span></b>. Give the <b>error interval</b> for its actual length (enter numbers only):</p>
+        <p>Lower bound = <input id="q10c_low" size="8"/> m &nbsp;&nbsp; Upper bound = <input id="q10c_high" size="8"/> m <span class="pm" id="q10b_pm"></span></p>
+        <div class="muted">Note: interpret as <b>lower ≤ length &lt; upper</b>.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q11 FACTORS & MULTIPLES -->
+  <section id="q11" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q11. Factors &amp; multiples — Prime factors, HCF &amp; LCM <span class="marktag">[6 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q11res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> Write <b id="q11a_n">84</b> as a product of prime factors (index form allowed). → 
+          <input id="q11a" size="30"/>
+          <button onclick="insertAt('q11a','×')">×</button>
+          <button onclick="insertAt('q11a','²')">²</button>
+          <button onclick="insertAt('q11a','³')">³</button>
+          <button onclick="insertAt('q11a','⁴')">⁴</button>
+          <button onclick="insertAt('q11a','⁵')">⁵</button>
+          <span class="pm" id="q11a_pm"></span>
+        </p>
+        <p><b>(b)</b> Write <b id="q11b_n">60</b> as a product of prime factors. → 
+          <input id="q11b" size="30"/>
+          <button onclick="insertAt('q11b','×')">×</button>
+          <button onclick="insertAt('q11b','²')">²</button>
+          <button onclick="insertAt('q11b','³')">³</button>
+          <button onclick="insertAt('q11b','⁴')">⁴</button>
+          <button onclick="insertAt('q11b','⁵')">⁵</button>
+          <span class="pm" id="q11b_pm"></span>
+        </p>
+        <p><b>(c)</b> Hence find <b>HCF</b> of <span id="q11h1">84</span> and <span id="q11h2">60</span>. → <input id="q11c" size="8"/><span class="pm" id="q11c_pm"></span></p>
+        <p><b>(d)</b> Hence find <b>LCM</b> of <span id="q11l1">84</span> and <span id="q11l2">60</span>. → <input id="q11d" size="8"/><span class="pm" id="q11d_pm"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q12 POWERS & ROOTS -->
+  <section id="q12" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q12. Powers &amp; roots <span class="marktag">[3 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q12res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> Evaluate <b id="q12a_base">5</b>³. → <input id="q12a" size="6"/><span class="pm" id="q12a_pm"></span></p>
+        <p><b>(b)</b> Evaluate √<b id="q12b_sq">196</b>. → <input id="q12b" size="6"/><span class="pm" id="q12b_pm"></span></p>
+        <p><b>(c)</b> Hence find <span id="q12c_text">5³ − √196</span>. → <input id="q12c" size="8"/><span class="pm" id="q12c_pm"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q13 INDICES -->
+  <section id="q13" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q13. Roots &amp; indices (laws) <span class="marktag">[4 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q13res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> Simplify to a single power of <b><span id="q13a_base_text">2</span></b>:
+          <math display="inline" id="q13a_math">
+            <mrow>
+              <msup><mn id="q13a_b1">2</mn><mn id="q13a_e1">5</mn></msup>
+              <mo>×</mo>
+              <msup><mn id="q13a_b2">2</mn><mn id="q13a_e2">3</mn></msup>
+              <mo>÷</mo>
+              <msup><mn id="q13a_b3">2</mn><mn id="q13a_e3">4</mn></msup>
+            </mrow>
+          </math>
+          <span>=</span>
+          <span class="expform">
+            <span class="expbase" id="q13a_base_show">2</span>
+            <span class="expbox"><span class="phantom">00</span><input id="q13a" type="text" aria-label="exponent n"></span>
+          </span>
+          <span class="pm" id="q13a_pm"></span>
+        </p>
+
+        <p><b>(b)</b> Express
+          <math display="inline" id="q13b_math">
+            <mrow>
+              <mn id="q13b_num">96</mn><mo>=</mo>
+              <msup><mn>2</mn><mi>a</mi></msup>
+              <mo>×</mo>
+              <msup><mn>3</mn><mi>b</mi></msup>
+            </mrow>
+          </math>
+          . Give integers a and b:
+          a = <input id="q13b_a" size="4"/> , b = <input id="q13b_b" size="4"/>
+          <span class="pm" id="q13b_pm"></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q14 STANDARD FORM (convert) -->
+  <section id="q14" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q14. Standard form — Convert <span class="marktag">[3 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q14res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> Write <b id="q14a_num">0.00036</b> in standard form.</p>
+        <div class="stdform">=
+          <input id="q14a_A" type="text"/>
+          <span class="ten">× 10</span>
+          <span class="expbox"><span class="phantom">00</span><input id="q14a_n" type="text" aria-label="exponent"></span>
+          <span class="pm" id="q14a_pm"></span>
+        </div>
+        <p><b>(b)</b> Write 
+          <math display="inline" id="q14b_sf">
+            <mrow><mn>5.2</mn><mo>×</mo><msup><mn>10</mn><mn>4</mn></msup></mrow>
+          </math> as an ordinary number. → <input id="q14b" size="10"/><span class="pm" id="q14b_pm"></span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q15 STANDARD FORM (calculate, + new part c) -->
+  <section id="q15" class="page" role="tabpanel">
+    <div class="qpanel">
+      <div class="qhead"><div class="flex"><h3>Q15. Standard form — Calculate <span class="marktag">[6 marks]</span></h3><img class="nocalc" src="https://www.pemtutoring.co.uk/wp-content/uploads/2023/07/No-calc-symbol.png" alt="Non-calculator"></div><div class="align-right"><span id="q15res" class="score"></span></div></div>
+      <div class="qbody">
+        <p><b>(a)</b> 
+          <math display="inline" id="q15a_expr">
+            <mrow>
+              <mo>(</mo><mn id="q15a_A1">3</mn><mo>×</mo><msup><mn>10</mn><mn id="q15a_p">5</mn></msup><mo>)</mo>
+              <mo>×</mo>
+              <mo>(</mo><mn id="q15a_A2">2</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn id="q15a_q">3</mn></mrow></msup><mo>)</mo>
+            </mrow>
+          </math>
+          — give your answer in standard form:
+        </p>
+        <div class="stdform">=
+          <input id="q15a_A" type="text"/>
+          <span class="ten">× 10</span>
+          <span class="expbox"><span class="phantom">00</span><input id="q15a_n" type="text"></span>
+          <span class="pm" id="q15a_pm"></span>
+        </div>
+
+        <p><b>(b)</b>
+          <math display="inline" id="q15b_expr">
+            <mrow>
+              <mo>(</mo><mn id="q15b_A1">6</mn><mo>×</mo><msup><mn>10</mn><mn id="q15b_p">7</mn></msup><mo>)</mo>
+              <mo>÷</mo>
+              <mo>(</mo><mn id="q15b_A2">3</mn><mo>×</mo><msup><mn>10</mn><mn id="q15b_q">2</mn></msup><mo>)</mo>
+            </mrow>
+          </math>
+          — give your answer in standard form:
+        </p>
+        <div class="stdform">=
+          <input id="q15b_A" type="text"/>
+          <span class="ten">× 10</span>
+          <span class="expbox"><span class="phantom">00</span><input id="q15b_n" type="text"></span>
+          <span class="pm" id="q15b_pm"></span>
+        </div>
+
+        <p><b>(c)</b>
+          <math display="inline" id="q15c_expr">
+            <mrow>
+              <mo>(</mo><mn id="q15c_A1">7</mn><mo>×</mo><msup><mn>10</mn><mn id="q15c_r">6</mn></msup><mo>)</mo>
+              <mo>+</mo>
+              <mo>(</mo><mn id="q15c_A2">3</mn><mo>×</mo><msup><mn>10</mn><mn id="q15c_s">5</mn></msup><mo>)</mo>
+            </mrow>
+          </math>
+          — give your answer in standard form:
+        </p>
+        <div class="stdform">=
+          <input id="q15c_A" type="text"/>
+          <span class="ten">× 10</span>
+          <span class="expbox"><span class="phantom">00</span><input id="q15c_n" type="text"></span>
+          <span class="pm" id="q15c_pm"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="page" role="tabpanel">
+    <h2>Results</h2>
+    <div class="grid cols-2">
+      <div>
+        <h3>Your score</h3>
+        <p>Name: <span id="nameDisplay" class="score">—</span></p>
+        <p><span id="totalscore" class="score">0</span> / <span id="maxtotal" class="score">62</span></p>
+        <p>Percentage: <span id="percent" class="score">0%</span></p>
+      </div>
+      <div>
+        <h3>Actions</h3>
+        <div class="actions">
+          <button id="markAllBtn" class="primary" onclick="mark_all()">Mark all questions</button>
+          <!-- This link is revealed after marking. Its actual URL is set in JS. -->
+          <a id="videoBtn" class="btn" href="#" target="_blank" rel="noopener" style="display:none">▶︎ Watch video tutorial</a>
+        </div>
+      </div>
+    </div>
+
+    <h3>Question breakdown</h3>
+    <table>
+      <thead><tr><th>Question</th><th>Marks</th></tr></thead>
+      <tbody id="breakdownBody"></tbody>
+    </table>
+  </section>
+</main>
+
+<!-- =================== WELCOME MODAL (instructions) =================== -->
+<div id="welcomeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="panel">
+    <h3 id="welcomeTitle">Welcome to this GCSE Number quiz</h3>
+    <p class="muted">
+      You can practise essential <b>Number</b> skills for GCSE Maths (Foundation, <b>non‑calculator</b>),
+      suitable for <b>AQA</b>, <b>Edexcel</b>, and <b>Eduqas</b>. Grab a pen and paper and work through
+      the 15 questions in order. When you’re ready, click “Mark all questions” to see your score.
+    </p>
+    <div class="row">
+      <input id="nameInput" type="text" placeholder="Your name (optional)" autocomplete="off"/>
+      <button class="primary" onclick="startQuiz()">Close &amp; start</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screen overlay element (tint) -->
+<div id="overlayTint" aria-hidden="true"></div>
+
+<script>
+  // ---------- Tabs ----------
+  const tabs=[...document.querySelectorAll('#tabbar button')];
+  const pages=[...document.querySelectorAll('section.page')];
+  tabs.forEach(b=>b.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('active')); b.classList.add('active');
+    const id=b.dataset.target; pages.forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active'); localStorage.setItem('currentTab_numberquiz',id);
+  }));
+  const last=localStorage.getItem('currentTab_numberquiz');
+  if(last && document.getElementById(last)){
+    tabs.forEach(x=>x.classList.remove('active')); pages.forEach(p=>p.classList.remove('active'));
+    document.querySelector(`#tabbar button[data-target="${last}"]`).classList.add('active');
+    document.getElementById(last).classList.add('active');
+  }
+
+  // ---------- Welcome modal ----------
+  const wmodal = document.getElementById('welcomeModal');
+  const nameInput = document.getElementById('nameInput');
+  function showWelcome(){ wmodal.style.display='flex'; setTimeout(()=>nameInput.focus(),10); }
+  function hideWelcome(){ wmodal.style.display='none'; }
+  function startQuiz(){
+    const v=(nameInput.value||'').trim();
+    if(v) localStorage.setItem('quiz_name', v);
+    updateNameDisplay();
+    // Generate a fresh set every time Start is pressed
+    generateAll();
+    hideWelcome();
+  }
+  function updateNameDisplay(){
+    const el=document.getElementById('nameDisplay');
+    el.textContent = localStorage.getItem('quiz_name') || '—';
+  }
+  showWelcome();
+  updateNameDisplay();
+
+  // ---------- Helpers ----------
+  const asNum = v => {
+    if(v==null) return NaN;
+    const s = String(v).trim();
+    if(/^\s*-?\d+\s*\/\s*-?\d+\s*$/.test(s)){
+      const [n,d] = s.split('/').map(x=>parseFloat(x));
+      if(d===0) return NaN;
+      return n/d;
+    }
+    const t = s.replace(/[^\-0-9.]/g,'');
+    return t?parseFloat(t):NaN;
+  };
+  const tol=(a,b,e=1e-3)=>Math.abs(asNum(a)-asNum(b))<=e;
+  const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1}
+  const simpFrac=(n,d)=>{if(!isFinite(n)||!isFinite(d)||d==0) return [NaN,NaN];let g=gcd(n,d);if(d<0){n=-n;d=-d}return [n/g,d/g]}
+  const eqFrac=(n1,d1,n2,d2)=>{let a=simpFrac(n1,d1),b=simpFrac(n2,d2);return a[0]===b[0] && a[1]===b[1]}
+  const setRes=(id,got,out)=>{const el=document.getElementById(id); if(!el) return;
+    el.textContent=` ${got} / ${out}`; el.className="score " + (got===out?"result ok":(got===0?"result no":""));}
+
+  // ticks / crosses
+  function setPM(id, ok){
+    const el=document.getElementById(id); if(!el) return;
+    el.textContent = ok ? '✓' : '✗';
+    el.className = 'pm ' + (ok ? 'ok' : 'no');
+    el.style.display='inline';
+  }
+  function clearPM(){ document.querySelectorAll('.pm').forEach(el=>{ el.textContent=''; el.className='pm'; el.style.display='none'; }); }
+
+  // Random utils
+  const R = {
+    int:(a,b)=>Math.floor(Math.random()*(b-a+1))+a,
+    pick:arr=>arr[Math.floor(Math.random()*arr.length)],
+    shuffle:arr=>arr.sort(()=>Math.random()-.5)
+  };
+  const lcm=(a,b)=>a/gcd(a,b)*b;
+
+  // Pretty decimal with fixed dp when needed
+  const fix=(x,dp)=>Number(x).toFixed(dp).replace(/\.0+$/,'').replace(/(\.\d*?)0+$/,'$1');
+
+  // Round to n significant figures
+  function roundSF(x,sf){
+    if(x===0) return 0;
+    const sign = Math.sign(x);
+    x = Math.abs(x);
+    const exp = Math.floor(Math.log10(x));
+    const factor = Math.pow(10, exp - sf + 1);
+    return sign * Math.round(x / factor) * factor;
+  }
+
+  // Prime factorisation mapping {prime: exponent}
+  function primeMap(n){
+    const m={};
+    let x=n;
+    for(let p=2;p*p<=x;p++){
+      while(x%p===0){ m[p]=(m[p]||0)+1; x/=p; }
+    }
+    if(x>1) m[x]=(m[x]||0)+1;
+    return m;
+  }
+  function hcfFromMaps(a,b){
+    let h=1;
+    const keys=new Set([...Object.keys(a),...Object.keys(b)]);
+    keys.forEach(k=>{
+      const p=+k;
+      if(a[p]&&b[p]) h*=Math.pow(p, Math.min(a[p],b[p]));
+    });
+    return h;
+  }
+  function lcmFromMaps(a,b){
+    let L=1;
+    const keys=new Set([...Object.keys(a),...Object.keys(b)]);
+    keys.forEach(k=>{
+      const p=+k;
+      const e=Math.max(a[p]||0,b[p]||0);
+      if(e>0) L*=Math.pow(p,e);
+    });
+    return L;
+  }
+
+  // ---------- YouTube link for results button ----------
+  // <<< REPLACE WITH YOUR YOUTUBE LINK >>>
+  const YT_URL = '';
+
+  // Global store of generated values & answers
+  const VARS = {};
+  const ANS  = {};
+
+  // ====== GENERATORS (called on Start) ======
+  function generateAll(){
+    // Clear all inputs & enable (fresh attempt)
+    document.querySelectorAll('input,select,textarea').forEach(el=>{ el.disabled=false; el.value=''; });
+    const markBtn = document.getElementById('markAllBtn'); if(markBtn){ markBtn.disabled=false; markBtn.textContent='Mark all questions'; }
+    // Hide video button until marked
+    const vbtn=document.getElementById('videoBtn'); if(vbtn){ vbtn.style.display='none'; vbtn.href='#'; }
+    clearPM();
+    genQ1(); genQ2(); genQ3(); genQ4(); genQ5(); genQ6(); genQ7(); genQ8(); genQ9();
+    genQ10(); genQ11(); genQ12(); genQ13(); genQ14(); genQ15();
+    // update max marks shown
+    const maxTotal=qMax.reduce((a,b)=>a+b,0); const mt=document.getElementById('maxtotal'); if(mt) mt.textContent=maxTotal;
+  }
+
+  function genQ1(){
+    const place = R.int(1,5);
+    const digits = [];
+    for(let i=1;i<=5;i++){
+      if(i===place){ digits.push(5); }
+      else{
+        let d=R.int(0,9); while(d===5) d=R.int(0,9);
+        digits.push(d);
+      }
+    }
+    const s = '0.'+digits.join('');
+    document.getElementById('q1a_num').textContent=s;
+    ANS.q1a = 5*Math.pow(10,-place);
+
+    const a=R.int(1,9), b=R.int(0,9), c=R.int(0,9);
+    const t = `0.${a}${b}${c}`;
+    document.getElementById('q1b_num').textContent=t;
+    ANS.q1b = {a,b,c};
+  }
+
+  function genQ2(){
+    // (a) nearest 10 / 100 / 1,000
+    const n = R.int(10000,99999);
+    const unit = R.pick([10,100,1000]);
+    document.getElementById('q2a_num').textContent=n;
+    document.getElementById('q2a_unit').textContent = unit===1000 ? '1,000' : String(unit);
+    ANS.q2a = Math.round(n/unit)*unit;
+
+    // (b) to 1 d.p. or 2 d.p.
+    const dp = R.pick([1,2]);
+    const d = (R.int(1000,9999))/1000; // 1.000 .. 9.999
+    document.getElementById('q2b_num').textContent=d.toFixed(3);
+    document.getElementById('q2b_label').textContent = dp===1 ? '1 decimal place' : '2 decimal places';
+    ANS.q2b = dp===1 ? Math.round(d*10)/10 : Math.round(d*100)/100;
+
+    // (c) to 1 s.f. or 2 s.f.
+    const leadZeros = R.int(1,3);
+    const a=R.int(1,9), b=R.int(0,9), c=R.int(0,9);
+    const str = '0.' + '0'.repeat(leadZeros) + a + b + c;
+    const val = parseFloat(str);
+    const sf = R.pick([1,2]);
+    document.getElementById('q2c_num').textContent=val.toString();
+    document.getElementById('q2c_label').textContent = sf===1 ? '1 significant figure' : '2 significant figures';
+    ANS.q2c = roundSF(val,sf);
+  }
+
+  function genQ3(){
+    const x = R.int(2000,9999);
+    const y = R.int(1000, x-1);
+    document.getElementById('q3a_x').textContent=x;
+    document.getElementById('q3a_y').textContent=y;
+    ANS.q3a = x-y;
+
+    const neg = - (R.int(1,9) + R.int(0,9)/10);
+    const pos =  (R.int(2,9) + R.int(0,99)/100);
+    document.getElementById('q3b_a').textContent=fix(neg,2).replace(/^-0\./,'-0.');
+    document.getElementById('q3b_b').textContent=fix(pos,2);
+    ANS.q3b = +((neg+pos).toFixed(2));
+  }
+
+  function genQ4(){
+    const m = R.int(200,399), n = R.int(12,29);
+    document.getElementById('q4a_m').textContent=m;
+    document.getElementById('q4a_n').textContent=n;
+    ANS.q4a = m*n;
+
+    const divisor = R.int(12,25);
+    const quotient = R.int(18,65);
+    const dividend = divisor*quotient;
+    document.getElementById('q4b_dividend').textContent=dividend;
+    document.getElementById('q4b_divisor').textContent=divisor;
+    ANS.q4b = quotient;
+  }
+
+  function genQ5(){
+    let d = R.int(5,12), n = R.int(2,4);
+    while(gcd(n,d)!==1) { n=R.int(2,4); d=R.int(5,12); }
+
+    const A = R.int(6,40)*d;
+    document.getElementById('q5a_amt').textContent=A;
+    document.getElementById('q5fracA').innerHTML = `<math><mfrac><mn>${n}</mn><mn>${d}</mn></mfrac></math>`;
+    ANS.q5a = (A*n)/d;
+
+    const M = R.int(6,40)*n;
+    document.getElementById('q5b_amt').textContent=M;
+    document.getElementById('q5fracB').innerHTML = `<math><mfrac><mn>${n}</mn><mn>${d}</mn></mfrac></math>`;
+    ANS.q5b = (M*d)/n;
+  }
+
+  function genQ6(){
+    const set=[6,8,9,12,15,20];
+    const d1 = R.pick(set);
+    let d2 = R.pick(set); while(d2===d1) d2=R.pick(set);
+    let n1 = R.int(1,d1-1), n2 = R.int(1,d2-1);
+    const SN = n1*d2 + n2*d1, SD = d1*d2;
+    const S = simpFrac(SN,SD);
+    document.getElementById('q6a_expr').innerHTML = `<math><mfrac><mn>${n1}</mn><mn>${d1}</mn></mfrac><mo>+</mo><mfrac><mn>${n2}</mn><mn>${d2}</mn></mfrac></math>`;
+    ANS.q6a = {n:S[0], d:S[1]};
+
+    const pool=[6,8,9,10,12,14,15,18,20];
+    let da=R.pick(pool), db=R.pick(pool); while(db===da) db=R.pick(pool);
+    let a = R.int(1,da-1), b = R.int(1,db-1);
+    if(a/da <= b/db){ [a,b]=[b,a]; [da,db]=[db,da]; }
+    const DN = a*db - b*da, DD = da*db;
+    const Dsimp=simpFrac(DN,DD);
+    document.getElementById('q6b_expr').innerHTML = `<math><mfrac><mn>${a}</mn><mn>${da}</mn></mfrac><mo>−</mo><mfrac><mn>${b}</mn><mn>${db}</mn></mfrac></math>`;
+    ANS.q6b = {n:Dsimp[0], d:Dsimp[1]};
+  }
+
+  function genQ7(){
+    const d1 = R.pick([3,4,5,6,7,8,9,10,12,14]);
+    let n1 = R.int(1,d1-1); while(gcd(n1,d1)!==1) n1=R.int(1,d1-1);
+    const k = R.int(2,5);
+    const n2 = k*d1;
+    const d2 = R.pick([14,15,18,20,21,24,28,30]);
+    const PN = n1*n2, PD=d1*d2;
+    const P=simpFrac(PN,PD);
+    document.getElementById('q7a_expr').innerHTML = `<math><mfrac><mn>${n1}</mn><mn>${d1}</mn></mfrac><mo>×</mo><mfrac><mn>${n2}</mn><mn>${d2}</mn></mfrac></math>`;
+    ANS.q7a = {n:P[0], d:P[1]};
+
+    const d3 = R.pick([5,6,7,8,9,10,12,15]);
+    let n3 = R.int(1,d3-1); while(gcd(n3,d3)!==1) n3=R.int(1,d3-1);
+    let d4 = R.pick([8,10,12,14,15,16,18,20]); while(d4===d3) d4=R.pick([8,10,12,14,15,16,18,20]);
+    const n4 = R.pick([2,3,4,5]);
+    const QN = n3*d4, QD = d3*n4;
+    const Q=simpFrac(QN,QD);
+    document.getElementById('q7b_expr').innerHTML = `<math><mfrac><mn>${n3}</mn><mn>${d3}</mn></mfrac><mo>÷</mo><mfrac><mn>${n4}</mn><mn>${d4}</mn></mfrac></math>`;
+    ANS.q7b = {n:Q[0], d:Q[1]};
+  }
+
+  function genQ8(){
+    const decs=[0.125,0.2,0.25,0.375,0.4,0.6,0.625,0.75,0.8,0.875];
+    const D = R.pick(decs);
+    document.getElementById('q8a_dec').textContent=D.toString();
+    let den=1, val=D;
+    while(Math.abs(val - Math.round(val))>1e-10){ val*=10; den*=10; }
+    const num=Math.round(val);
+    const S=simpFrac(num,den);
+    ANS.q8a = {n:S[0], d:S[1], pct:D*100};
+
+    const denChoices=[2,4,5,8,10,16,20,25,40,50,80,125];
+    const db=R.pick(denChoices); const nb=R.int(1,db-1);
+    document.getElementById('q8b_frac').innerHTML = `<math><mfrac><mn>${nb}</mn><mn>${db}</mn></mfrac></math>`;
+    ANS.q8b = nb/db;
+
+    const pcts=[12,15,18,20,24,25,30,35,40,45,50,60,75];
+    const P=R.pick(pcts);
+    document.getElementById('q8c_pct').textContent=P+'%';
+    const Sf=simpFrac(P,100);
+    ANS.q8c={n:Sf[0],d:Sf[1]};
+
+    const perc=[10,12,15,20,25,30,40,50][R.int(0,7)];
+    const base=R.pick([60,80,100,120,160,180,200,240,300,400]);
+    document.getElementById('q8d_pct').textContent=perc+'%';
+    document.getElementById('q8d_amt').textContent=base;
+    ANS.q8d = Math.round(base*perc/100);
+  }
+
+  function genQ9(){
+    const x = (R.int(12,98) + R.int(0,9)/10);
+    const y = (R.int(21,89))/100;
+    document.getElementById('q9x').textContent=x.toFixed(1);
+    document.getElementById('q9y').textContent=y.toFixed(2);
+    const r1 = roundSF(x,1);
+    const r2 = roundSF(y,1);
+    ANS.q9 = {r1, r2, est: r1*r2};
+  }
+
+  function genQ10(){
+    const kg = (R.int(10,95)/10);
+    const m  = (R.int(5,99)/10);
+    document.getElementById('q10a_kg').textContent=kg.toFixed(1);
+    document.getElementById('q10b_m').textContent=m.toFixed(1);
+    ANS.q10a = Math.round(kg*1000);
+    ANS.q10b = Math.round(m*100);
+
+    const nearestIsMetre = Math.random()<0.5;
+    if(nearestIsMetre){
+      const val = R.int(2,30);
+      document.getElementById('q10c_meas').textContent=val;
+      document.getElementById('q10c_unit').textContent='1 m';
+      ANS.q10c = {low: val-0.5, high: val+0.5};
+    }else{
+      const val = (R.int(10,300)/10);
+      document.getElementById('q10c_meas').textContent=val.toFixed(1);
+      document.getElementById('q10c_unit').textContent='0.1 m';
+      ANS.q10c = {low: +(val-0.05).toFixed(2), high: +(val+0.05).toFixed(2)};
+    }
+  }
+
+  function genQ11(){
+    function twoDigitComposite(){
+      const pool=[];
+      for(let n=12;n<=99;n++){
+        let prime=true;
+        for(let p=2;p*p<=n;p++){ if(n%p===0){ prime=false; break; } }
+        if(!prime) pool.push(n);
+      }
+      const nice=pool.filter(n=>{
+        const m=primeMap(n);
+        return Object.keys(m).every(k=>+k<=13);
+      });
+      return R.pick(nice.length?nice:pool);
+    }
+    const A = twoDigitComposite();
+    const B = twoDigitComposite();
+    document.getElementById('q11a_n').textContent=A;
+    document.getElementById('q11b_n').textContent=B;
+    document.getElementById('q11h1').textContent=A;
+    document.getElementById('q11h2').textContent=B;
+    document.getElementById('q11l1').textContent=A;
+    document.getElementById('q11l2').textContent=B;
+    const mA=primeMap(A), mB=primeMap(B);
+    ANS.q11 = {A, B, mapA:mA, mapB:mB, hcf:hcfFromMaps(mA,mB), lcm:lcmFromMaps(mA,mB)};
+  }
+
+  function genQ12(){
+    const base = R.pick([2,3,4,5,6]);
+    const sqs  = [25,36,49,64,81,100,121,144,169,196,225];
+    const sqn  = R.pick(sqs);
+    document.getElementById('q12a_base').textContent=base;
+    document.getElementById('q12b_sq').textContent=sqn;
+    document.getElementById('q12c_text').textContent = `${base}³ − √${sqn}`;
+    ANS.q12 = {a3:Math.pow(base,3), root:Math.round(Math.sqrt(sqn))};
+    ANS.q12.diff = ANS.q12.a3 - ANS.q12.root;
+  }
+
+  function genQ13(){
+    // random base 2..9
+    const base = R.pick([2,3,4,5,6,7,8,9]);
+    const e1=R.int(2,7), e2=R.int(1,6), e3=R.int(0,5);
+    document.getElementById('q13a_base_text').textContent = base;
+    document.getElementById('q13a_b1').textContent = base;
+    document.getElementById('q13a_b2').textContent = base;
+    document.getElementById('q13a_b3').textContent = base;
+    document.getElementById('q13a_e1').textContent=e1;
+    document.getElementById('q13a_e2').textContent=e2;
+    document.getElementById('q13a_e3').textContent=e3;
+    document.getElementById('q13a_base_show').textContent = base;
+    ANS.q13a = e1+e2-e3;
+
+    let a,b,N;
+    do{
+      a=R.int(1,6); b=R.int(0,4); N=Math.pow(2,a)*Math.pow(3,b);
+    }while(N<10 || N>99);
+    document.getElementById('q13b_num').textContent=N;
+    ANS.q13b = {a,b};
+  }
+
+  function genQ14(){
+    const zeros = R.int(2,5);
+    const K = R.int(12,95);
+    const val = K * Math.pow(10,-(zeros+2));
+    // Enforce: at most 7 digits after the decimal point for the displayed number in Q14(a)
+    document.getElementById('q14a_num').textContent = val.toFixed(7).replace(/\.?0+$/,'');
+    const exp = Math.floor(Math.log10(val));
+    const A   = val/Math.pow(10,exp);
+    ANS.q14a = {A:+A.toPrecision(3), n:exp};
+
+    const A2 = (R.int(12,95)/10);
+    const n2 = R.int(2,5);
+    document.getElementById('q14b_sf').innerHTML = `<mrow><mn>${A2}</mn><mo>×</mo><msup><mn>10</mn><mn>${n2}</mn></msup></mrow>`;
+    ANS.q14b = A2 * Math.pow(10,n2);
+  }
+
+  function genQ15(){
+    // (a) integers only for coefficients
+    const A1 = R.int(2,9);
+    const A2 = R.int(2,9);
+    const p  = R.int(3,6), q = -R.int(1,4);
+    document.getElementById('q15a_A1').textContent=A1;
+    document.getElementById('q15a_p').textContent=p;
+    document.getElementById('q15a_A2').textContent=A2;
+    document.getElementById('q15a_q').textContent=Math.abs(q);
+    let A = A1*A2, n = p+q;
+    while(A>=10){ A/=10; n++; }
+    while(A<1){ A*=10; n--; }
+    ANS.q15a = {A:+(+A).toFixed(4), n};
+
+    // (b) division: only integer or 1 dp (no recurring)
+    const B2 = R.pick([2,5]);
+    const B1 = R.int(2,9);
+    const p2 = R.int(4,8), q2 = R.int(1,4);
+    document.getElementById('q15b_A1').textContent=B1;
+    document.getElementById('q15b_p').textContent=p2;
+    document.getElementById('q15b_A2').textContent=B2;
+    document.getElementById('q15b_q').textContent=q2;
+    let C = B1/B2, n2 = p2 - q2;
+    while(C>=10){ C/=10; n2++; }
+    while(C<1){ C*=10; n2--; }
+    ANS.q15b = {A:+(+C).toFixed(4), n:n2};
+
+    // (c) alternate + / − each restart; exponents differ by 1
+    const prev = localStorage.getItem('q15c_op') || 'sub';
+    const op = (prev==='add') ? 'sub' : 'add';
+    localStorage.setItem('q15c_op', op);
+
+    const r = R.int(3,8), s = r-1;
+    const C1 = R.int(2,9), C2 = R.int(2,9);
+
+    document.getElementById('q15c_A1').textContent=C1;
+    document.getElementById('q15c_r').textContent=r;
+    document.getElementById('q15c_A2').textContent=C2;
+    document.getElementById('q15c_s').textContent=s;
+
+    const q15c_expr = document.getElementById('q15c_expr');
+    q15c_expr.innerHTML = `
+      <mrow>
+        <mo>(</mo><mn>${C1}</mn><mo>×</mo><msup><mn>10</mn><mn>${r}</mn></msup><mo>)</mo>
+        <mo>${op==='add' ? '+' : '−'}</mo>
+        <mo>(</mo><mn>${C2}</mn><mo>×</mo><msup><mn>10</mn><mn>${s}</mn></msup><mo>)</mo>
+      </mrow>`;
+
+    let D = (op==='add') ? (C1 + C2/10) : (C1 - C2/10);
+    let n3 = r;
+    while(D>=10){ D/=10; n3++; }
+    while(D<1){ D*=10; n3--; }
+    ANS.q15c = {A:+(+D).toFixed(4), n:n3};
+  }
+
+  // ---------- Q1 ----------
+  function mark_q1(){
+    let m=0;
+    const aOK = tol(q1a.value,ANS.q1a);
+    if(aOK) m+=1; setPM('q1a_pm', aOK);
+
+    const b1=asNum(q1b1.value)===ANS.q1b.a;
+    const b2=asNum(q1b2.value)===ANS.q1b.b;
+    const b3=asNum(q1b3.value)===ANS.q1b.c;
+    if(b1) m+=1; if(b2) m+=1; if(b3) m+=1;
+    setPM('q1b_pm', b1 && b2 && b3);
+
+    setRes('q1res',m,4); return m;
+  }
+
+  // ---------- Q2 ----------
+  function mark_q2(){
+    let m=0;
+    const aOK = asNum(q2a.value)===ANS.q2a; if(aOK) m+=1; setPM('q2a_pm', aOK);
+    const bOK = tol(q2b.value,ANS.q2b,1e-3); if(bOK) m+=1; setPM('q2b_pm', bOK);
+    const cOK = tol(q2c.value,ANS.q2c,1e-6); if(cOK) m+=1; setPM('q2c_pm', cOK);
+    setRes('q2res',m,3); return m;
+  }
+
+  // ---------- Q3 ----------
+  function mark_q3(){
+    let m=0;
+    const aOK = asNum(q3a.value)===ANS.q3a; if(aOK) m+=2; setPM('q3a_pm', aOK);
+    const bOK = tol(q3b.value,ANS.q3b,1e-3); if(bOK) m+=2; setPM('q3b_pm', bOK);
+    setRes('q3res',m,4); return m;
+  }
+
+  // ---------- Q4 ----------
+  function mark_q4(){
+    let m=0;
+    const aOK = asNum(q4a.value)===ANS.q4a; if(aOK) m+=2; setPM('q4a_pm', aOK);
+    const bOK = asNum(q4b.value)===ANS.q4b; if(bOK) m+=2; setPM('q4b_pm', bOK);
+    setRes('q4res',m,4); return m;
+  }
+
+  // helper: score fraction and part tick
+  function scoreFrac(inpN,inpD,targetN,targetD,full){
+    const [sn,sd]=simpFrac(inpN,inpD);
+    if(isNaN(sn)||isNaN(sd)) return {score:0, ok:false};
+    if(sn===targetN && sd===targetD) return {score:full, ok:true};
+    if(eqFrac(inpN,inpD,targetN,targetD)) return {score:Math.max(0,full-1), ok:false};
+    return {score:0, ok:false};
+  }
+
+  // ---------- Q5 ----------
+  function mark_q5(){
+    let m=0;
+    const aOK = asNum(q5a.value)===ANS.q5a; if(aOK) m+=1; setPM('q5a_pm', aOK);
+    const bOK = asNum(q5b.value)===ANS.q5b; if(bOK) m+=2; setPM('q5b_pm', bOK);
+    setRes('q5res',m,3); return m;
+  }
+
+  // ---------- Q6 ----------
+  function mark_q6(){
+    let m=0;
+    const A=scoreFrac(asNum(q6a_n.value),asNum(q6a_d.value),ANS.q6a.n,ANS.q6a.d,2);
+    m+=A.score; setPM('q6a_pm', A.ok);
+    const B=scoreFrac(asNum(q6b_n.value),asNum(q6b_d.value),ANS.q6b.n,ANS.q6b.d,2);
+    m+=B.score; setPM('q6b_pm', B.ok);
+    setRes('q6res',m,4); return m;
+  }
+
+  // ---------- Q7 ----------
+  function mark_q7(){
+    let m=0;
+    const A=scoreFrac(asNum(q7a_n.value),asNum(q7a_d.value),ANS.q7a.n,ANS.q7a.d,2);
+    m+=A.score; setPM('q7a_pm', A.ok);
+    const B=scoreFrac(asNum(q7b_n.value),asNum(q7b_d.value),ANS.q7b.n,ANS.q7b.d,3);
+    m+=B.score; setPM('q7b_pm', B.ok);
+    setRes('q7res',m,5); return m;
+  }
+
+  // ---------- Q8 ----------
+  function mark_q8(){
+    let m=0;
+    const aOK = eqFrac(asNum(q8a_n.value),asNum(q8a_d.value),ANS.q8a.n,ANS.q8a.d) && Math.abs(asNum(q8a_pct.value)-ANS.q8a.pct)<=0.05;
+    if(eqFrac(asNum(q8a_n.value),asNum(q8a_d.value),ANS.q8a.n,ANS.q8a.d)) m+=1;
+    if(Math.abs(asNum(q8a_pct.value)-ANS.q8a.pct)<=0.05) m+=1;
+    setPM('q8a_pm', aOK);
+
+    const bOK = tol(q8b.value,ANS.q8b,1e-6); if(bOK) m+=1; setPM('q8b_pm', bOK);
+    const cOK = eqFrac(asNum(q8c_n.value),asNum(q8c_d.value),ANS.q8c.n,ANS.q8c.d); if(cOK) m+=1; setPM('q8c_pm', cOK);
+    const dOK = asNum(q8d.value)===ANS.q8d; if(dOK) m+=1; setPM('q8d_pm', dOK);
+
+    setRes('q8res',m,5); return m;
+  }
+
+  // ---------- Q9 ----------
+  function mark_q9(){
+    let m=0;
+    const a = tol(q9r1.value,ANS.q9.r1,1e-9);
+    const b = tol(q9r2.value,ANS.q9.r2,1e-9);
+    const c = tol(q9est.value,ANS.q9.est,1e-9);
+    if(a) m+=1; if(b) m+=1; if(c) m+=1;
+    setPM('q9_pm', a && b && c);
+    setRes('q9res',m,3); return m;
+  }
+
+  // ---------- Q10 ----------
+  function mark_q10(){
+    let m=0;
+    const convOK = (asNum(q10a.value)===ANS.q10a) && (asNum(q10b.value)===ANS.q10b);
+    if(asNum(q10a.value)===ANS.q10a) m+=1;
+    if(asNum(q10b.value)===ANS.q10b) m+=1;
+    setPM('q10a_pm', convOK);
+
+    const lowOK = Math.abs(asNum(q10c_low.value)-ANS.q10c.low)<=1e-3;
+    const highOK = Math.abs(asNum(q10c_high.value)-ANS.q10c.high)<=1e-3;
+    if(lowOK) m+=1;
+    if(highOK) m+=1;
+    if(lowOK && highOK) m+=1;
+    setPM('q10b_pm', lowOK && highOK);
+
+    setRes('q10res',m,5); return m;
+  }
+
+  // ---------- Q11 ----------
+  function insertAt(id,ch){
+    const el=document.getElementById(id);
+    const s=el.selectionStart??el.value.length, e=el.selectionEnd??el.value.length;
+    el.value=el.value.slice(0,s)+ch+el.value.slice(e); el.focus(); el.selectionStart=el.selectionEnd=s+ch.length;
+  }
+  function parsePrimeFactors(raw){
+    const s = String(raw||'').toLowerCase().replace(/\s+/g,'')
+      .replace(/[×x]/g,'*').replace(/²/g,'^2').replace(/³/g,'^3').replace(/⁴/g,'^4').replace(/⁵/g,'^5');
+    if(!s) return {};
+    const parts = s.split('*').filter(Boolean);
+    const map = {};
+    for(const p of parts){
+      const m = /^(\d+)(?:\^(\-?\d+))?$/.exec(p);
+      if(!m) return {bad:true};
+      const prime = parseInt(m[1],10), pow = m[2]?parseInt(m[2],10):1;
+      if(prime<2) return {bad:true};
+      for(let q=2;q*q<=prime;q++){ if(prime%q===0) return {bad:true}; }
+      map[prime]=(map[prime]||0)+pow;
+    }
+    return map;
+  }
+  function samePrimeMap(a,b){
+    const ka=Object.keys(a), kb=Object.keys(b);
+    if(ka.length!==kb.length) return false;
+    for(const k of ka){ if((b[k]||0)!==(a[k]||0)) return false; }
+    return true;
+  }
+  function mark_q11(){
+    let m=0;
+    const fa=parsePrimeFactors(q11a.value);
+    const fb=parsePrimeFactors(q11b.value);
+    const Aok=!fa.bad && samePrimeMap(fa,ANS.q11.mapA); if(Aok) m+=2; setPM('q11a_pm', Aok);
+    const Bok=!fb.bad && samePrimeMap(fb,ANS.q11.mapB); if(Bok) m+=2; setPM('q11b_pm', Bok);
+    const Cok=asNum(q11c.value)===ANS.q11.hcf; if(Cok) m+=1; setPM('q11c_pm', Cok);
+    const Dok=asNum(q11d.value)===ANS.q11.lcm; if(Dok) m+=1; setPM('q11d_pm', Dok);
+    setRes('q11res',m,6); return m;
+  }
+
+  // ---------- Q12 ----------
+  function mark_q12(){
+    let m=0;
+    const aOK=asNum(q12a.value)===ANS.q12.a3; if(aOK) m+=1; setPM('q12a_pm', aOK);
+    const bOK=asNum(q12b.value)===ANS.q12.root; if(bOK) m+=1; setPM('q12b_pm', bOK);
+    const cOK=asNum(q12c.value)===ANS.q12.diff; if(cOK) m+=1; setPM('q12c_pm', cOK);
+    setRes('q12res',m,3); return m;
+  }
+
+  // ---------- Q13 ----------
+  function mark_q13(){
+    let m=0;
+    const aOK=String(q13a.value).trim()===String(ANS.q13a); if(aOK) m+=2; setPM('q13a_pm', aOK);
+    const bOK=(asNum(q13b_a.value)===ANS.q13b.a && asNum(q13b_b.value)===ANS.q13b.b); if(bOK) m+=2; setPM('q13b_pm', bOK);
+    setRes('q13res',m,4); return m;
+  }
+
+  // ---------- Q14 ----------
+  function mark_q14(){
+    let m=0;
+    const aOK=tol(q14a_A.value, ANS.q14a.A, 0.01) && String(q14a_n.value).trim()===String(ANS.q14a.n);
+    if(aOK) m+=2; setPM('q14a_pm', aOK);
+    const bOK=asNum(q14b.value)===ANS.q14b; if(bOK) m+=1; setPM('q14b_pm', bOK);
+    setRes('q14res',m,3); return m;
+  }
+
+  // ---------- Q15 ----------
+  function mark_q15(){
+    let m=0;
+    const aOK=tol(q15a_A.value,ANS.q15a.A,0.01) && String(q15a_n.value).trim()===String(ANS.q15a.n);
+    if(aOK) m+=2; setPM('q15a_pm', aOK);
+
+    const bOK=tol(q15b_A.value,ANS.q15b.A,0.01) && String(q15b_n.value).trim()===String(ANS.q15b.n);
+    if(bOK) m+=2; setPM('q15b_pm', bOK);
+
+    const cOK=tol(q15c_A.value,ANS.q15c.A,0.01) && String(q15c_n.value).trim()===String(ANS.q15c.n);
+    if(cOK) m+=2; setPM('q15c_pm', cOK);
+
+    setRes('q15res',m,6); return m;
+  }
+
+  // ---------- Mark all ----------
+  const qMax=[4,3,4,4,3,4,5,5,3,5,6,3,4,3,6];
+  const qTopics=[
+    'Place value (decimals)',
+    'Rounding (nearest / d.p. / s.f.)',
+    'Add & subtract',
+    'Multiply & divide (written)',
+    'Fraction of an amount & reverse',
+    'Add & subtract fractions',
+    'Multiply & divide fractions',
+    'FDP conversions + % of amount',
+    'Estimation to 1 s.f.',
+    'Measures & accuracy (units & bounds)',
+    'Prime factors, HCF & LCM',
+    'Powers & roots',
+    'Laws of indices',
+    'Standard form (convert)',
+    'Standard form (calculate)'
+  ];
+  function colourClass(score, max){
+    if(max===3){ if(score>=3) return 'mark-green'; if(score===2) return 'mark-orange'; return 'mark-red'; }
+    if(max===4){ if(score===4) return 'mark-green'; if(score===3) return 'mark-orange'; return 'mark-red'; }
+    if(max===5){ if(score>=4) return 'mark-green'; if(score===3) return 'mark-orange'; return 'mark-red'; }
+    if(max===6){ if(score>=5) return 'mark-green'; if(score===3||score===4) return 'mark-orange'; return 'mark-red'; }
+    return '';
+  }
+  function renderBreakdown(scores){
+    const body=document.getElementById('breakdownBody'); body.innerHTML='';
+    scores.forEach((m,i)=>{
+      const tr=document.createElement('tr');
+      const th=document.createElement('th'); th.textContent=`Q${i+1} — ${qTopics[i]}`;
+      const td=document.createElement('td'); td.textContent=`${m} / ${qMax[i]}`;
+      td.classList.add('markcell', colourClass(m, qMax[i]));
+      tr.appendChild(th); tr.appendChild(td); body.appendChild(tr);
+    });
+  }
+  function mark_all(){
+    const scores=[
+      mark_q1(),mark_q2(),mark_q3(),mark_q4(),mark_q5(),
+      mark_q6(),mark_q7(),mark_q8(),mark_q9(),mark_q10(),
+      mark_q11(),mark_q12(),mark_q13(),mark_q14(),mark_q15()
+    ];
+    const total=scores.reduce((a,b)=>a+b,0);
+    const maxTotal=qMax.reduce((a,b)=>a+b,0);
+    document.getElementById('totalscore').textContent=total;
+    document.getElementById('maxtotal').textContent=maxTotal;
+    const percent = Math.round((total/maxTotal)*100);
+    document.getElementById('percent').textContent = percent + '%';
+    renderBreakdown(scores);
+
+    // Show video button with your link
+    const vbtn=document.getElementById('videoBtn');
+    if(vbtn){
+      vbtn.href = YT_URL;  // link set here
+      vbtn.style.display='inline-block';
+    }
+
+    // lock inputs after marking
+    document.querySelectorAll('input,select,textarea').forEach(el=>el.disabled=true);
+    const btn=document.getElementById('markAllBtn'); if(btn){ btn.disabled=true; btn.textContent='Marked'; }
+
+    // Show Results tab
+    document.querySelector('#tabbar button[data-target="results"]').click();
+    return total;
+  }
+
+  // ---------- Restrictions: disable right-click and Ctrl+U / Ctrl+C ----------
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('keydown', function(e){
+    const key = (e.key || '').toLowerCase();
+    if (e.ctrlKey && (key === 'u' || key === 'c')) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
+
+  // ---------- Display controls logic (overlay + theme) ----------
+  const ovNoneBtn   = document.getElementById('ovNoneBtn');
+  const ovBlueBtn   = document.getElementById('ovBlueBtn');
+  const ovYellowBtn = document.getElementById('ovYellowBtn');
+  const lightBtn    = document.getElementById('lightBtn');
+  const darkBtn     = document.getElementById('darkBtn');
+
+  function setActive(btns, activeBtn){
+    btns.forEach(b=>b.classList.remove('active'));
+    activeBtn.classList.add('active');
+  }
+
+  function setOverlay(mode){
+    document.body.classList.remove('overlay-blue','overlay-yellow');
+    if(mode==='blue') document.body.classList.add('overlay-blue');
+    if(mode==='yellow') document.body.classList.add('overlay-yellow');
+    localStorage.setItem('overlay_mode', mode);
+    if(mode==='blue') setActive([ovNoneBtn,ovBlueBtn,ovYellowBtn], ovBlueBtn);
+    else if(mode==='yellow') setActive([ovNoneBtn,ovBlueBtn,ovYellowBtn], ovYellowBtn);
+    else setActive([ovNoneBtn,ovBlueBtn,ovYellowBtn], ovNoneBtn);
+  }
+
+  function setTheme(mode){
+    const isDark = mode==='dark';
+    document.body.classList.toggle('dark', isDark);
+    localStorage.setItem('theme_mode', mode);
+    if(isDark) setActive([lightBtn,darkBtn], darkBtn);
+    else setActive([lightBtn,darkBtn], lightBtn);
+  }
+
+  // Hook up buttons
+  ovNoneBtn.addEventListener('click', ()=>setOverlay('none'));
+  ovBlueBtn.addEventListener('click', ()=>setOverlay('blue'));
+  ovYellowBtn.addEventListener('click', ()=>setOverlay('yellow'));
+  lightBtn.addEventListener('click', ()=>setTheme('light'));
+  darkBtn.addEventListener('click', ()=>setTheme('dark'));
+
+  // Restore preferences
+  setTheme(localStorage.getItem('theme_mode') || 'light');
+  setOverlay(localStorage.getItem('overlay_mode') || 'none');
+</script>
+</body>
+</html>
