@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -162,6 +161,22 @@
   /* keep ONLY input fields light for typing answers (and any text inputs) */
   body.dark input, body.dark select, body.dark textarea{
     background:#ffffff; color:#111111; border-color:#e5e7eb;
+  }
+
+  /* ====== NEW: Disable text highlighting & drag (except inputs) ====== */
+  body, body *{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    -webkit-touch-callout:none;
+    -webkit-user-drag:none;
+  }
+  input, textarea{
+    -webkit-user-select:text;
+    -moz-user-select:text;
+    -ms-user-select:text;
+    user-select:text;
   }
 </style>
 </head>
@@ -1271,6 +1286,28 @@
   document.addEventListener('keydown', function(e){
     const key = (e.key || '').toLowerCase();
     if (e.ctrlKey && (key === 'u' || key === 'c')) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
+
+  // ---------- NEW: Restrictions: disable text highlighting and drag/drop (except inputs) ----------
+  document.addEventListener('selectstart', function(e){
+    const t = e.target;
+    const tag = (t && t.tagName) ? t.tagName.toUpperCase() : '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    e.preventDefault();
+  });
+  document.addEventListener('dragstart', function(e){ e.preventDefault(); });
+  document.addEventListener('drop', function(e){ e.preventDefault(); });
+
+  // ---------- NEW: Block Select-All (Ctrl/Cmd+A) outside inputs ----------
+  document.addEventListener('keydown', function(e){
+    const key = (e.key || '').toLowerCase();
+    const t = e.target;
+    const tag = (t && t.tagName) ? t.tagName.toUpperCase() : '';
+    const inEditable = (tag === 'INPUT' || tag === 'TEXTAREA');
+    if (!inEditable && (e.ctrlKey || e.metaKey) && key === 'a') {
       e.preventDefault();
       e.stopPropagation();
     }
